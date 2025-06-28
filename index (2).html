@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PUBG Mobile Tournament Standings</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #111; color: #fff; }
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+    th, td { border: 1px solid #555; padding: 8px; text-align: center; }
+    th { background: #4a148c; }
+    tr:nth-child(even) { background: #222; }
+  </style>
+</head>
+<body>
+  <h1>ตารางคะแนน PUBG MOBILE TOURNAMENT</h1>
+  <table id="scoreTable">
+    <thead>
+      <tr>
+        <th>ลำดับ</th>
+        <th>ทีม</th>
+        <th>Elims</th>
+        <th>Rank Pts</th>
+        <th>Total Pts</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <script>
+    const spreadsheetId = "1Ew-xkh-YzkKbhLzxnYDm9qw9R9BuLVK_yJrxMFtn3Sxs";
+    const apiKey = "YOUR_API_KEY_HERE"; // ใส่ API Key จริงที่นี่
+    const range = "MATCHALL!A2:E21"; // สมมติ 21 ทีม อยู่ในแถว 2 ถึง 22
+
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}?key=${apiKey}`;
+
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        const rows = data.values;
+        const tbody = document.querySelector("#scoreTable tbody");
+        tbody.innerHTML = "";
+        rows.forEach((row) => {
+          const tr = document.createElement("tr");
+          row.forEach((cell) => {
+            const td = document.createElement("td");
+            td.textContent = cell;
+            tr.appendChild(td);
+          });
+          tbody.appendChild(tr);
+        });
+      })
+      .catch((err) => console.error("Error: ", err));
+  </script>
+</body>
+</html>
